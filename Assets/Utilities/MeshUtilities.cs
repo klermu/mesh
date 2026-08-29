@@ -124,22 +124,27 @@ public class MeshUtilities
 
         // top cap (triangle fan) - uses ring at divisions*2 and center at divisions*4
         int topStart = divisions * 6;
+
         for (int i = 0; i < divisions; i++)
         {
             int t = topStart + i * 3;
+
             tris[t] = divisions * 2 + i;
-            tris[t + 1] = divisions * 2 + ((i + 1) % divisions);
-            tris[t + 2] = divisions * 4; // top center
+            tris[t + 1] = divisions * 4;
+            tris[t + 2] = divisions * 2 + ((i + 1) % divisions);
         }
 
-        // bottom cap (triangle fan) - uses ring at divisions*3 and center at divisions*4 + 1
+
+        // BOTTOM CAP
         int bottomStart = divisions * 9;
+
         for (int i = 0; i < divisions; i++)
         {
             int t = bottomStart + i * 3;
-            tris[t] = divisions * 3 + ((i + 1) % divisions);
-            tris[t + 1] = divisions * 3 + i;
-            tris[t + 2] = divisions * 4 + 1; // bottom center
+
+            tris[t] = divisions * 3 + i;
+            tris[t + 1] = divisions * 4 + 1;
+            tris[t + 2] = divisions * 3 + ((i + 1) % divisions);
         }
 
         mesh.triangles = tris;

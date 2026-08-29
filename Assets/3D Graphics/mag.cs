@@ -5,23 +5,28 @@ public class mag : MonoBehaviour
     public GameObject target;
     void Start()
     {
-        // Ensure a MeshRenderer is present
-        MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
-        if (meshRenderer == null)
-            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        // Create a shared material for both cylinders
+        Shader shader = Shader.Find("Standard") ?? Shader.Find("Sprites/Default") ?? Shader.Find("UI/Default") ?? Shader.Find("Hidden/InternalErrorShader");
+        Material sharedMat = shader != null ? new Material(shader) : null;
 
-        // Try to find the Standard shader; fall back gracefully if it's missing
-        
+        for (int c = 0; c < 2; c++)
+        {
+            // Create cylinder GameObject
+            GameObject cyl = new GameObject($"Cylinder{c + 1}");
+            cyl.transform.parent = this.transform;
+            cyl.transform.localPosition = new Vector3(c == 0 ? -1.5f : 1.5f, 0f, 0f);
 
-        // Ensure a MeshFilter is present and assign mesh if available
-        MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
-        if (meshFilter == null)
-            meshFilter = gameObject.AddComponent<MeshFilter>();
+            MeshFilter mf = cyl.AddComponent<MeshFilter>();
+            MeshRenderer mr = cyl.AddComponent<MeshRenderer>();
 
-        var mesh = MeshUtilities.Cylinder(8, 1, 2);
-        if (mesh != null)
-            meshFilter.mesh = mesh;
-        else
-            Debug.LogError("MeshUtilities.Cylinder returned null mesh.");
+            if (sharedMat != null)
+                mr.sharedMaterial = sharedMat;
+
+            Mesh mesh = MeshUtilities.Cylinder(8, 1f, 0.1f);
+            if (mesh != null)
+                mf.mesh = mesh;
+            else
+                Debug.LogError("MeshUtilities.Cylinder returned null mesh.", this);
+        }
     }
 }
