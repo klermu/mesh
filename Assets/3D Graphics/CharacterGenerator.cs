@@ -3,7 +3,7 @@ using UnityEngine;
 
 // =========================================================
 // 3D CHARACTER GENERATOR
-// Body + Head + 2-Part Arms + Legs + Joints
+// Body + Apple-Style Round Head + 2-Part Arms + Legs + Joints
 // Uses MeshUtilities.Sweep()
 // =========================================================
 
@@ -33,7 +33,6 @@ public class CharacterGenerator : MonoBehaviour
 
     // =========================================================
     // PUBLIC MATERIALS
-    // Assign these in the Unity Inspector
     // =========================================================
 
     public Material bodyMaterial;
@@ -49,27 +48,26 @@ public class CharacterGenerator : MonoBehaviour
         Vector3[] bodyProfile = new Vector3[]
         {
             new Vector3(-1.2f, -2f, 0f),
-            new Vector3(1.2f, -2f, 0f),
-            new Vector3(1.4f, 1.5f, 0f),
-            new Vector3(0.9f, 2f, 0f),
-            new Vector3(-0.9f, 2f, 0f),
-            new Vector3(-1.4f, 1.5f, 0f)
+            new Vector3( 1.2f, -2f, 0f),
+            new Vector3( 1.4f,  1.5f, 0f),
+            new Vector3( 0.9f,  2f, 0f),
+            new Vector3(-0.9f,  2f, 0f),
+            new Vector3(-1.4f,  1.5f, 0f)
         };
 
 
         // =========================================================
-        // HEAD PROFILE
+        // APPLE-STYLE HEAD PROFILE
+        // EXACT SAME POINTS AS YOUR APPLE CODE
         // =========================================================
 
         Vector3[] headProfile = new Vector3[]
         {
-            new Vector3(-1.1f, -1f, 0f),
-            new Vector3(1.1f, -1f, 0f),
-            new Vector3(1.2f, 0f, 0f),
-            new Vector3(0.9f, 1f, 0f),
-            new Vector3(0f, 1.3f, 0f),
-            new Vector3(-0.9f, 1f, 0f),
-            new Vector3(-1.2f, 0f, 0f)
+            new Vector3(0f, 0f, 0f),
+            new Vector3(1f, 0f, 0f),
+            new Vector3(1.2f, 1f, 0f),
+            new Vector3(1f, 2f, 0f),
+            new Vector3(0f, 2.3f, 0f)
         };
 
 
@@ -79,10 +77,10 @@ public class CharacterGenerator : MonoBehaviour
 
         Vector3[] armProfile = new Vector3[]
         {
-            new Vector3(-0.35f, -1.8f, 0f),
-            new Vector3(0.35f, -1.8f, 0f),
-            new Vector3(0.4f, 1.8f, 0f),
-            new Vector3(-0.4f, 1.8f, 0f)
+            new Vector3(-0.35f, 0f,   0f),
+            new Vector3( 0.35f, 0f,   0f),
+            new Vector3( 0.4f,  1.8f, 0f),
+            new Vector3(-0.4f,  1.8f, 0f)
         };
 
 
@@ -92,40 +90,80 @@ public class CharacterGenerator : MonoBehaviour
 
         Vector3[] legProfile = new Vector3[]
         {
-            new Vector3(-0.45f, -2.5f, 0f),
-            new Vector3(0.45f, -2.5f, 0f),
-            new Vector3(0.45f, 2.5f, 0f),
-            new Vector3(-0.45f, 2.5f, 0f)
+            new Vector3(-0.45f, 0f,   0f),
+            new Vector3( 0.45f, 0f,   0f),
+            new Vector3( 0.45f, 1.5f, 0f),
+            new Vector3(-0.45f, 1.5f, 0f)
         };
 
 
         // =========================================================
-        // PATH
+        // BODY / ARM / LEG PATH
         // =========================================================
 
         Matrix4x4[] path = new Matrix4x4[6];
 
         path[0] =
             Matrix4x4.Scale(new Vector3(0, 0, 1)) *
-            Matrix4x4.Translate(new Vector3(0, 0, -0.5f));
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.5f)
+            );
 
         path[1] =
             Matrix4x4.Scale(new Vector3(0.95f, 0.95f, 1)) *
-            Matrix4x4.Translate(new Vector3(0, 0, -0.3f));
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.3f)
+            );
 
         path[2] =
-            Matrix4x4.Translate(new Vector3(0, 0, -0.1f));
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.1f)
+            );
 
         path[3] =
-            Matrix4x4.Translate(new Vector3(0, 0, 0.1f));
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.1f)
+            );
 
         path[4] =
             Matrix4x4.Scale(new Vector3(0.95f, 0.95f, 1)) *
-            Matrix4x4.Translate(new Vector3(0, 0, 0.3f));
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.3f)
+            );
 
         path[5] =
             Matrix4x4.Scale(new Vector3(0, 0, 1)) *
-            Matrix4x4.Translate(new Vector3(0, 0, 0.5f));
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.5f)
+            );
+
+
+        // =========================================================
+        // HEAD PATH
+        // SAME METHOD AS YOUR APPLE SCRIPT
+        // =========================================================
+
+        int headDivisions = 32;
+
+        Matrix4x4[] headPath =
+            new Matrix4x4[headDivisions];
+
+        for (int i = 0; i < headDivisions; i++)
+        {
+            float angle =
+                2.0f * Mathf.PI * i / headDivisions;
+
+            headPath[i] =
+                Matrix4x4.TRS(
+                    Vector3.zero,
+                    Quaternion.Euler(
+                        0,
+                        angle * Mathf.Rad2Deg,
+                        0
+                    ),
+                    Vector3.one
+                );
+        }
 
 
         // =========================================================
@@ -137,22 +175,21 @@ public class CharacterGenerator : MonoBehaviour
             bodyProfile,
             path,
             bodyMaterial,
-            new Vector3(0, 4f, 0)
+            new Vector3(0f, 4f, 0f)
         );
 
 
         // =========================================================
         // HEAD
-        // Directly connected to body
-        // NO NECK
+        // APPLE-STYLE ROUND HEAD
         // =========================================================
 
         head = CreatePart(
             "Head",
             headProfile,
-            path,
+            headPath,
             skinMaterial,
-            new Vector3(0, 7.3f, 0)
+            new Vector3(0f, 5.8f, 0f)
         );
 
 
@@ -162,7 +199,7 @@ public class CharacterGenerator : MonoBehaviour
 
         leftShoulderJoint = CreateJoint(
             "Left Shoulder Joint",
-            new Vector3(-1.5f, 5f, 0),
+            new Vector3(-1.5f, 2f, 0f),
             body.transform
         );
 
@@ -173,7 +210,7 @@ public class CharacterGenerator : MonoBehaviour
 
         rightShoulderJoint = CreateJoint(
             "Right Shoulder Joint",
-            new Vector3(1.5f, 5f, 0),
+            new Vector3(1.5f, 2f, 0f),
             body.transform
         );
 
@@ -187,14 +224,14 @@ public class CharacterGenerator : MonoBehaviour
             armProfile,
             path,
             bodyMaterial,
-            new Vector3(-1.5f, 3.2f, 0)
+            new Vector3(-1.5f, 3.2f, 0f)
         );
 
         leftUpperArm.transform.parent =
             leftShoulderJoint.transform;
 
         leftUpperArm.transform.localPosition =
-            new Vector3(0, -1.8f, 0);
+            new Vector3(0f, -2f, 0f);
 
 
         // =========================================================
@@ -206,14 +243,14 @@ public class CharacterGenerator : MonoBehaviour
             armProfile,
             path,
             bodyMaterial,
-            new Vector3(1.5f, 3.2f, 0)
+            new Vector3(1.5f, 3.2f, 0f)
         );
 
         rightUpperArm.transform.parent =
             rightShoulderJoint.transform;
 
         rightUpperArm.transform.localPosition =
-            new Vector3(0, -1.8f, 0);
+            new Vector3(0f, -2f, 0f);
 
 
         // =========================================================
@@ -222,7 +259,7 @@ public class CharacterGenerator : MonoBehaviour
 
         leftElbowJoint = CreateJoint(
             "Left Elbow Joint",
-            new Vector3(0, -3.6f, 0),
+            new Vector3(0f, -3.6f, 0f),
             leftShoulderJoint.transform
         );
 
@@ -233,7 +270,7 @@ public class CharacterGenerator : MonoBehaviour
 
         rightElbowJoint = CreateJoint(
             "Right Elbow Joint",
-            new Vector3(0, -3.6f, 0),
+            new Vector3(0f, -3.6f, 0f),
             rightShoulderJoint.transform
         );
 
@@ -254,7 +291,7 @@ public class CharacterGenerator : MonoBehaviour
             leftElbowJoint.transform;
 
         leftLowerArm.transform.localPosition =
-            new Vector3(0, -1.8f, 0);
+            new Vector3(0f, -0.15f, 0f);
 
 
         // =========================================================
@@ -273,7 +310,7 @@ public class CharacterGenerator : MonoBehaviour
             rightElbowJoint.transform;
 
         rightLowerArm.transform.localPosition =
-            new Vector3(0, -1.8f, 0);
+            new Vector3(0f, -0.15f, 0f);
 
 
         // =========================================================
@@ -282,7 +319,7 @@ public class CharacterGenerator : MonoBehaviour
 
         leftHipJoint = CreateJoint(
             "Left Hip Joint",
-            new Vector3(-0.65f, 2f, 0),
+            new Vector3(-0.65f, 2f, 0f),
             body.transform
         );
 
@@ -293,7 +330,7 @@ public class CharacterGenerator : MonoBehaviour
 
         rightHipJoint = CreateJoint(
             "Right Hip Joint",
-            new Vector3(0.65f, 2f, 0),
+            new Vector3(0.65f, 2f, 0f),
             body.transform
         );
 
@@ -314,7 +351,7 @@ public class CharacterGenerator : MonoBehaviour
             leftHipJoint.transform;
 
         leftLeg.transform.localPosition =
-            new Vector3(0, -2.5f, 0);
+            new Vector3(0f, -5.3f, 0f);
 
 
         // =========================================================
@@ -333,7 +370,7 @@ public class CharacterGenerator : MonoBehaviour
             rightHipJoint.transform;
 
         rightLeg.transform.localPosition =
-            new Vector3(0, -2.5f, 0);
+            new Vector3(0f, -5.3f, 0f);
     }
 
 
@@ -348,17 +385,35 @@ public class CharacterGenerator : MonoBehaviour
         Material material,
         Vector3 position)
     {
-        GameObject part = new GameObject();
+        GameObject part =
+            new GameObject();
 
-        part.name = partName;
+        part.name =
+            partName;
+
+
+        // =====================================================
+        // MESH FILTER
+        // =====================================================
 
         MeshFilter meshFilter =
             part.AddComponent<MeshFilter>();
 
+
+        // =====================================================
+        // MESH RENDERER
+        // =====================================================
+
         MeshRenderer meshRenderer =
             part.AddComponent<MeshRenderer>();
 
-        meshRenderer.sharedMaterial = material;
+        meshRenderer.sharedMaterial =
+            material;
+
+
+        // =====================================================
+        // CREATE SWEEP MESH
+        // =====================================================
 
         meshFilter.mesh =
             MeshUtilities.Sweep(
@@ -367,12 +422,20 @@ public class CharacterGenerator : MonoBehaviour
                 true
             );
 
-        part.transform.parent = transform;
 
-        part.transform.localPosition = position;
+        // =====================================================
+        // TRANSFORM
+        // =====================================================
+
+        part.transform.parent =
+            transform;
+
+        part.transform.localPosition =
+            position;
 
         part.transform.localRotation =
             Quaternion.identity;
+
 
         return part;
     }
@@ -390,7 +453,8 @@ public class CharacterGenerator : MonoBehaviour
         GameObject joint =
             new GameObject();
 
-        joint.name = jointName;
+        joint.name =
+            jointName;
 
         joint.transform.parent =
             parent;
@@ -400,6 +464,7 @@ public class CharacterGenerator : MonoBehaviour
 
         joint.transform.localRotation =
             Quaternion.identity;
+
 
         return joint;
     }
