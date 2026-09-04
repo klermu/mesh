@@ -46,16 +46,7 @@ public class LampMaker : MonoBehaviour
 
         // Arm profile
         Vector3[] armProfile = new Vector3[] {
-            new Vector3(0.0f, -0.12f, 0.0f),
-            new Vector3(0.014f, -0.114f, 0.0f),
-            new Vector3(0.02f, -0.1f, 0.0f),
-            new Vector3(0.02f, 0.1f, 0.0f),
-            new Vector3(0.014f, 0.114f, 0.0f),
-            new Vector3(0.0f, 0.12f, 0.0f),
-            new Vector3(-0.014f, 0.114f, 0.0f),
-            new Vector3(-0.02f, 0.1f, 0.0f),
-            new Vector3(-0.02f, -0.1f, 0.0f),
-            new Vector3(-0.014f, -0.114f, 0.0f)
+           
         };
 
         // Create the path with duplicated intermediate transforms for a sharp bevel
@@ -95,13 +86,25 @@ public class LampMaker : MonoBehaviour
 
         // Lamp shade profile (simple example)
         Vector3[] shadeProfile = new Vector3[] {
-            new Vector3(0.0f, 0.05f, 0.0f),
-            new Vector3(0.08f, 0.05f, 0.0f),
-            new Vector3(0.095f, 0.03f, 0.0f),
-            new Vector3(0.1f, 0.0f, 0.0f),
-            new Vector3(0.095f, -0.03f, 0.0f),
-            new Vector3(0.08f, -0.05f, 0.0f),
-            new Vector3(0.0f, -0.05f, 0.0f)
+            // Left side
+            new Vector3(-2f, 0f, 0f),
+            new Vector3(-2.2f, -0.1f, 0f),
+            new Vector3(-2.2f, -0.5f, 0f),
+            new Vector3(-2f, -0.6f, 0f),
+            new Vector3(-1.5f, -0.5f, 0f),
+            new Vector3(-0.25f, -0.5f, 0f),
+            new Vector3(-0.25f, -3f, 0f),
+            new Vector3(0f, -3f, 0f),
+
+            // Right side
+            new Vector3(0.25f, -3f, 0f),
+            new Vector3(0.25f, -0.5f, 0f),
+            new Vector3(1.5f, -0.5f, 0f),
+            new Vector3(2f, -0.6f, 0f),
+            new Vector3(2.2f, -0.5f, 0f),
+            new Vector3(2.2f, -0.1f, 0f),
+            new Vector3(2f, 0f, 0f),
+            new Vector3(0f, 0f, 0f)
         };
 
         Matrix4x4[] shadePath = MeshUtilities.MakeCirclePath(0f, 16);
