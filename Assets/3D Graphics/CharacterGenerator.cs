@@ -30,6 +30,10 @@ public class CharacterGenerator : MonoBehaviour
     GameObject leftHipJoint;
     GameObject rightHipJoint;
 
+    GameObject chestArmor;
+    GameObject leftShoulderBlade;
+    GameObject rightShoulderBlade;
+
 
     // =========================================================
     // PUBLIC MATERIALS
@@ -37,6 +41,7 @@ public class CharacterGenerator : MonoBehaviour
 
     public Material bodyMaterial;
     public Material skinMaterial;
+    public Material armourMaterial;
 
 
     void Start()

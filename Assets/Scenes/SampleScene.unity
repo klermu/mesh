@@ -351,8 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440b0d31d02b5d9459f98f8dae0dc990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterGenerator
-  bodyMaterial: {fileID: 2100000, guid: 41bcbbcca30eef44a95de62ac97b5c8c, type: 2}
-  skinMaterial: {fileID: 2100000, guid: ce5977a7e14cdb24db59691f672a1c04, type: 2}
+  bodyMaterial: {fileID: 2100000, guid: ad442e4d482e88448b3b102405d60d57, type: 2}
+  skinMaterial: {fileID: 2100000, guid: a1456a8d892d8aa46a7016613aa7d5db, type: 2}
+  armourMaterial: {fileID: 0}
 --- !u!23 &902634234
 MeshRenderer:
   m_ObjectHideFlags: 0
