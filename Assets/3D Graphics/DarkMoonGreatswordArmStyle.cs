@@ -27,9 +27,9 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
             new Vector3(-1f, 0f, 0f),
             new Vector3(1f, 0f, 0f),
             new Vector3(0.8f, 1f, 0f),
-            new Vector3(0.8f, 6f, 0f),
+            new Vector3(0.7f, 7f, 0f),
             new Vector3(0f, 8.5f, 0f),
-            new Vector3(-0.8f, 6f, 0f),
+            new Vector3(-0.7f, 7f, 0f),
             new Vector3(-0.8f, 1f, 0f)
         };
 
@@ -66,12 +66,12 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
         Matrix4x4[] swordPath = new Matrix4x4[6];
 
         swordPath[0] =
-            Matrix4x4.Scale(new Vector3(0, 0, 1)) *
+            Matrix4x4.Scale(new Vector3(0, 0, 15)) *
             Matrix4x4.Translate(
                 new Vector3(0, 0, -0.01f));
 
         swordPath[1] =
-            Matrix4x4.Scale(new Vector3(0.9f, 0.98f, 1)) *
+            Matrix4x4.Scale(new Vector3(0.9f, 0.98f, 15)) *
             Matrix4x4.Translate(
                 new Vector3(0, 0, -0.01f));
 
@@ -84,12 +84,12 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
                 new Vector3(0, 0, 0.0075f));
 
         swordPath[4] =
-            Matrix4x4.Scale(new Vector3(0.9f, 0.98f, 1)) *
+            Matrix4x4.Scale(new Vector3(0.9f, 0.98f, 15)) *
             Matrix4x4.Translate(
                 new Vector3(0, 0, 0.01f));
 
         swordPath[5] =
-            Matrix4x4.Scale(new Vector3(0, 0, 1)) *
+            Matrix4x4.Scale(new Vector3(0, 0, 15)) *
             Matrix4x4.Translate(
                 new Vector3(0, 0, 0.01f));
 
