@@ -24,13 +24,15 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
 
         Vector3[] swordProfile = new Vector3[]
         {
-            new Vector3(-1f, 0f, 0f),
-            new Vector3(1f, 0f, 0f),
-            new Vector3(0.8f, 1f, 0f),
-            new Vector3(0.7f, 7f, 0f),
-            new Vector3(0f, 8.5f, 0f),
-            new Vector3(-0.7f, 7f, 0f),
-            new Vector3(-0.8f, 1f, 0f)
+            new Vector3(0, 2, 0),
+    new Vector3(1.41f, 1.41f, 0),
+    new Vector3(2, 0, 0),
+    new Vector3(1.41f, -1.41f, 0),
+    new Vector3(0, -2, 0),
+    new Vector3(-1.41f, -1.41f, 0),
+    new Vector3(-2, 0, 0),
+    new Vector3(-1.41f, 1.41f, 0),
+    new Vector3(0, 2, 0)
         };
 
 

@@ -1,9 +1,6 @@
 using UnityEngine;
 
-// Example demonstrating two uses of MeshUtilities.Sweep:
-// 1) An open sweep (a simple extruded rounded rectangle)
-// 2) A closed sweep (revolve-style surface) using MakeCirclePath
-public class SweepExample : MonoBehaviour
+public class ball : MonoBehaviour
 {
     GameObject sword;
     GameObject handle;
@@ -26,13 +23,25 @@ public class SweepExample : MonoBehaviour
 
         Vector3[] swordProfile = new Vector3[]
         {
-             new Vector3(-2f, 0f, 0f),
-            new Vector3(-0.5f, 0f, 0f),
-            new Vector3(0f, -0.5f, 0f),
-            new Vector3(0.5f, 0f, 0f),
-            new Vector3(2f, 0f, 0f),
-            new Vector3(2f, -2f, 0f),
-            new Vector3(-2f, -2f, 0f)
+            new Vector3(-1.5f, 0f, 0f),
+            new Vector3(-1.55f, 0.2f, 0f),
+            new Vector3(-1.65f, 0.4f, 0f),
+            new Vector3(-1.5f, 0.8f, 0f),
+            new Vector3(-1.1f, 1.23f, 0f),
+            new Vector3(-0.6f, 1.1f, 0f),
+            new Vector3(-0.4f, 1.6f, 0f),
+            new Vector3(0f, 1.7f, 0f),
+            new Vector3(0f, 1.5f, 0f),
+            new Vector3(-0.2f, 1.45f, 0f),
+            new Vector3(-0.4f, 1.2f, 0f),
+            new Vector3(-0.4f, 0.8f, 0f),
+            new Vector3(-0.4f, 0.8f, 0f),
+            new Vector3(-0.55f, 0.8f, 0f),
+            new Vector3(-1f, 1f, 0f),
+            new Vector3(-1.3f, 0.8f, 0f),
+            new Vector3(-1.4f, 0.5f, 0f),
+            new Vector3(-1.4f, 0.5f, 0f),
+            new Vector3(-1.25f, 0.2f, 0f)
         };
 
 
@@ -42,22 +51,25 @@ public class SweepExample : MonoBehaviour
 
         Vector3[] handleProfile = new Vector3[]
         {
-            new Vector3(-1f, 0f, 0f),
-            new Vector3(-2.2f, -0.1f, 0f),
-            new Vector3(-2.2f, -0.5f, 0f),
-            new Vector3(-2f, -0.6f, 0f),
-            new Vector3(-1.5f, -0.5f, 0f),
-            new Vector3(-0.25f, -0.5f, 0f),
-            new Vector3(-0.25f, -3f, 0f),
-            new Vector3(0f, -3f, 0f),
-            new Vector3(0.25f, -3f, 0f),
-            new Vector3(0.25f, -0.5f, 0f),
-            new Vector3(1.5f, -0.5f, 0f),
-            new Vector3(2f, -0.6f, 0f),
-            new Vector3(2.2f, -0.5f, 0f),
-            new Vector3(2.2f, -0.1f, 0f),
-            new Vector3(1f, 0f, 0f),
-            new Vector3(0f, 0f, 0f)
+             new Vector3(1.5f, 0f, 0f),
+            new Vector3(1.55f, -0.2f, 0f),
+            new Vector3(1.65f, -0.4f, 0f),
+            new Vector3(1.5f, -0.8f, 0f),
+            new Vector3(1.1f, -1.23f, 0f),
+            new Vector3(0.6f, -1.1f, 0f),
+            new Vector3(0.4f, -1.6f, 0f),
+            new Vector3(0f, -1.7f, 0f),
+            new Vector3(0f, -1.5f, 0f),
+            new Vector3(0.2f, -1.45f, 0f),
+            new Vector3(0.4f, -1.2f, 0f),
+            new Vector3(0.4f, -0.8f, 0f),
+            new Vector3(0.4f, -0.8f, 0f),
+            new Vector3(0.55f, -0.8f, 0f),
+            new Vector3(1f, -1f, 0f),
+            new Vector3(1.3f, -0.8f, 0f),
+            new Vector3(1.4f, -0.5f, 0f),
+            new Vector3(1.4f, -0.5f, 0f),
+            new Vector3(1.25f, -0.2f, 0f)
         };
 
 
@@ -176,4 +188,5 @@ public class SweepExample : MonoBehaviour
         sword.transform.localRotation =
             Quaternion.identity;
     }
+
 }

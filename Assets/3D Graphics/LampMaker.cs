@@ -46,16 +46,15 @@ public class LampMaker : MonoBehaviour
 
         // Arm profile
         Vector3[] armProfile = new Vector3[] {
-           new Vector3( 0.00f, -0.45f,  0.00f),
-            new Vector3( 0.055f, -0.43f,  0.00f),
-            new Vector3( 0.075f, -0.35f,  0.00f),
-            new Vector3( 0.075f,  0.35f,  0.00f),
-            new Vector3( 0.055f,  0.43f,  0.00f),
-            new Vector3( 0.00f,  0.45f,  0.00f),
-            new Vector3(-0.055f,  0.43f,  0.00f),
-            new Vector3(-0.075f,  0.35f,  0.00f),
-            new Vector3(-0.075f, -0.35f, 0.00f),
-            new Vector3(-0.055f, -0.43f, 0.00f)
+           new Vector3(0f, 0f, 0.6f),
+            new Vector3(-0.4f, 0f, 0.8f),
+            new Vector3(-0.55f, 0f, 0.8f),
+            new Vector3(-0.5f, 0f, 0.4f),
+            new Vector3(-0.9f, 0f, 0.05f),
+            new Vector3(-0.9f, 0f, 0.05f),
+            new Vector3(-1.25f, 0f, 0.2f),
+            new Vector3(-1.5f, 0f, 0f),
+            new Vector3(0f, 0f, 0f)
         };
 
         // Create the path with duplicated intermediate transforms for a sharp bevel
