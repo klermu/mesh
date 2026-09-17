@@ -2,116 +2,385 @@ using UnityEngine;
 
 public class LampMaker : MonoBehaviour
 {
-    public GameObject lampBase;
-    public GameObject arm1;
-    public GameObject arm2;
-    public GameObject lampShade;
-    public GameObject baseJoint;
-    public GameObject elbowJoint;
-    public GameObject shadeJoint;
+    GameObject lampBase;
+
+    GameObject arm1;
+    GameObject arm2;
+    GameObject lampShade;
+
+    GameObject baseJoint;
+    GameObject elbowJoint;
+    GameObject shadeJoint;
+
+
+    // ============================================================
+    // START
+    // ============================================================
 
     void Start()
     {
-        // shared material
-        Shader shader = Shader.Find("Standard") ?? Shader.Find("Sprites/Default") ?? Shader.Find("UI/Default") ?? Shader.Find("Hidden/InternalErrorShader");
-        Material mat = shader != null ? new Material(shader) : null;
+        CreateLampBase();
 
-        // Lamp base
-        lampBase = new GameObject();
-        lampBase.name = "Lamp Base";
-        MeshRenderer meshRenderer = lampBase.AddComponent<MeshRenderer>();
-        if (mat != null) meshRenderer.sharedMaterial = mat;
-        MeshFilter meshFilter = lampBase.AddComponent<MeshFilter>();
-        meshFilter.mesh = MeshUtilities.Cylinder(16, 0.02f, 0.01f);
+        CreateJoints();
+
+        CreateArm1();
+        CreateArm2();
+
+        CreateLampShade();
+    }
+
+
+    // ============================================================
+    // LAMP BASE
+    // ============================================================
+
+    void CreateLampBase()
+    {
+        lampBase = new GameObject("Lamp Base");
+
+        MeshFilter filter =
+            lampBase.AddComponent<MeshFilter>();
+
+        MeshRenderer renderer =
+            lampBase.AddComponent<MeshRenderer>();
+
+        filter.mesh =
+            MeshUtilities.Cylinder(
+                16,
+                0.01f,
+                0.01f
+            );
+
         lampBase.transform.parent = transform;
-        lampBase.transform.localPosition = new Vector3(0, 0.02f, 0);
 
-        // Joints
-        baseJoint = new GameObject();
-        baseJoint.name = "Base Joint";
-        baseJoint.transform.parent = lampBase.transform;
-        baseJoint.transform.localPosition = new Vector3(0, 0, 0);
+        lampBase.transform.localPosition =
+            new Vector3(0, 0.005f, 0);
 
-        elbowJoint = new GameObject();
-        elbowJoint.name = "Elbow Joint";
-        elbowJoint.transform.parent = baseJoint.transform;
-        elbowJoint.transform.localPosition = new Vector3(0, 0.2f, 0);
-        elbowJoint.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 45));
+        lampBase.transform.localRotation =
+            Quaternion.identity;
+    }
 
-        shadeJoint = new GameObject();
-        shadeJoint.name = "Shade Joint";
-        shadeJoint.transform.parent = elbowJoint.transform;
-        shadeJoint.transform.localPosition = new Vector3(0, 0.2f, 0);
-        shadeJoint.transform.localRotation = Quaternion.identity;
 
-        // Arm profile
-        Vector3[] armProfile = new Vector3[] {
-           new Vector3(0f, 0f, 0.6f),
-            new Vector3(-0.4f, 0f, 0.8f),
-            new Vector3(-0.55f, 0f, 0.8f),
-            new Vector3(-0.5f, 0f, 0.4f),
-            new Vector3(-0.9f, 0f, 0.05f),
-            new Vector3(-0.9f, 0f, 0.05f),
-            new Vector3(-1.25f, 0f, 0.2f),
-            new Vector3(-1.5f, 0f, 0f),
-            new Vector3(0f, 0f, 0f)
+    // ============================================================
+    // ARM PROFILE
+    // ============================================================
+
+    Vector3[] GetArmProfile()
+    {
+        return new Vector3[]
+        {
+            new Vector3(0.0f, -0.12f, 0.0f),
+            new Vector3(0.014f, -0.114f, 0.0f),
+            new Vector3(0.02f, -0.1f, 0.0f),
+
+            new Vector3(0.02f, 0.1f, 0.0f),
+
+            new Vector3(0.014f, 0.114f, 0.0f),
+            new Vector3(0.0f, 0.12f, 0.0f),
+
+            new Vector3(-0.014f, 0.114f, 0.0f),
+            new Vector3(-0.02f, 0.1f, 0.0f),
+
+            new Vector3(-0.02f, -0.1f, 0.0f),
+            new Vector3(-0.014f, -0.114f, 0.0f)
+        };
+    }
+
+
+    // ============================================================
+    // ARM PATH
+    // ============================================================
+
+    Matrix4x4[] GetArmPath()
+    {
+        Matrix4x4[] armPath =
+            new Matrix4x4[10];
+
+        // Start cap
+        armPath[0] =
+            Matrix4x4.Scale(
+                new Vector3(0, 0, 1)
+            ) *
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.01f)
+            );
+
+
+        // Start bevel
+        armPath[1] =
+            Matrix4x4.Scale(
+                new Vector3(0.9f, 0.98f, 1)
+            ) *
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.01f)
+            );
+
+
+        // Duplicate for sharp bevel
+        armPath[2] =
+            Matrix4x4.Scale(
+                new Vector3(0.9f, 0.98f, 1)
+            ) *
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.01f)
+            );
+
+
+        // Start of straight section
+        armPath[3] =
+            Matrix4x4.Translate(
+                new Vector3(0, 0, -0.0075f)
+            );
+
+
+        // End of straight section
+        armPath[4] =
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.0075f)
+            );
+
+
+        // End bevel
+        armPath[5] =
+            Matrix4x4.Scale(
+                new Vector3(0.9f, 0.98f, 1)
+            ) *
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.01f)
+            );
+
+
+        // Duplicate for sharp bevel
+        armPath[6] =
+            Matrix4x4.Scale(
+                new Vector3(0.9f, 0.98f, 1)
+            ) *
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.01f)
+            );
+
+
+        // Cap
+        armPath[7] =
+            Matrix4x4.Scale(
+                new Vector3(0, 0, 1)
+            ) *
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0.01f)
+            );
+
+
+        // Extra transforms to keep the sweep stable
+        armPath[8] =
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0)
+            );
+
+        armPath[9] =
+            Matrix4x4.Translate(
+                new Vector3(0, 0, 0)
+            );
+
+        return armPath;
+    }
+
+
+    // ============================================================
+    // CREATE ARM 1
+    // ============================================================
+
+    void CreateArm1()
+    {
+        arm1 = new GameObject("Lamp Arm 1");
+
+        MeshFilter filter =
+            arm1.AddComponent<MeshFilter>();
+
+        MeshRenderer renderer =
+            arm1.AddComponent<MeshRenderer>();
+
+        filter.mesh =
+            MeshUtilities.Sweep(
+                GetArmProfile(),
+                GetArmPath(),
+                false
+            );
+
+        // IMPORTANT:
+        // Arm 1 belongs to Base Joint
+        arm1.transform.parent =
+            baseJoint.transform;
+
+        arm1.transform.localPosition =
+            new Vector3(0, 0.1f, 0);
+
+        arm1.transform.localRotation =
+            Quaternion.identity;
+    }
+
+
+    // ============================================================
+    // CREATE ARM 2
+    // ============================================================
+
+    void CreateArm2()
+    {
+        arm2 = new GameObject("Lamp Arm 2");
+
+        MeshFilter filter =
+            arm2.AddComponent<MeshFilter>();
+
+        MeshRenderer renderer =
+            arm2.AddComponent<MeshRenderer>();
+
+        filter.mesh =
+            MeshUtilities.Sweep(
+                GetArmProfile(),
+                GetArmPath(),
+                false
+            );
+
+        // IMPORTANT:
+        // Arm 2 belongs to Elbow Joint
+        arm2.transform.parent =
+            elbowJoint.transform;
+
+        arm2.transform.localPosition =
+            new Vector3(0, 0.1f, 0);
+
+        arm2.transform.localRotation =
+            Quaternion.identity;
+    }
+
+
+    // ============================================================
+    // CREATE JOINTS
+    // ============================================================
+
+    void CreateJoints()
+    {
+        // --------------------------------------------------------
+        // BASE JOINT
+        // --------------------------------------------------------
+
+        baseJoint =
+            new GameObject("Base Joint");
+
+        baseJoint.transform.parent =
+            lampBase.transform;
+
+        baseJoint.transform.localPosition =
+            new Vector3(0, 0, 0);
+
+        baseJoint.transform.localRotation =
+            Quaternion.identity;
+
+
+        // --------------------------------------------------------
+        // ELBOW JOINT
+        // --------------------------------------------------------
+
+        elbowJoint =
+            new GameObject("Elbow Joint");
+
+        elbowJoint.transform.parent =
+            baseJoint.transform;
+
+        elbowJoint.transform.localPosition =
+            new Vector3(0, 0.2f, 0);
+
+        elbowJoint.transform.localRotation =
+            Quaternion.Euler(
+                0,
+                0,
+                45
+            );
+
+
+        // --------------------------------------------------------
+        // SHADE JOINT
+        // --------------------------------------------------------
+
+        shadeJoint =
+            new GameObject("Shade Joint");
+
+        shadeJoint.transform.parent =
+            elbowJoint.transform;
+
+        shadeJoint.transform.localPosition =
+            new Vector3(0, 0.2f, 0);
+
+        shadeJoint.transform.localRotation =
+            Quaternion.identity;
+    }
+
+
+    // ============================================================
+    // LAMP SHADE
+    // ============================================================
+
+    void CreateLampShade()
+    {
+        lampShade =
+            new GameObject("Lamp Shade");
+
+        MeshFilter filter =
+            lampShade.AddComponent<MeshFilter>();
+
+        MeshRenderer renderer =
+            lampShade.AddComponent<MeshRenderer>();
+
+
+        // Half cross-section of the shade.
+        // Starts at the centre and moves outward.
+
+        Vector3[] shadeProfile =
+        {
+            new Vector3(0f, 0f, 0f),
+
+            new Vector3(0.04f, 0f, 0f),
+
+            new Vector3(0.06f, 0.02f, 0f),
+
+            new Vector3(0.08f, 0.04f, 0f),
+
+            new Vector3(0.08f, 0.12f, 0f),
+
+            new Vector3(0.16f, 0.16f, 0f),
+
+            new Vector3(0.20f, 0.18f, 0f)
         };
 
-        // Create the path with duplicated intermediate transforms for a sharp bevel
-        Matrix4x4[] armPath = new Matrix4x4[10];
-        armPath[0] = Matrix4x4.Scale(new Vector3(0, 0, 1)) * Matrix4x4.Translate(new Vector3(0, 0, -0.01f));
-        armPath[1] = Matrix4x4.Scale(new Vector3(0.9f, 0.98f, 1)) * Matrix4x4.Translate(new Vector3(0, 0, -0.01f));
-        armPath[2] = armPath[1];
-        armPath[3] = Matrix4x4.Translate(new Vector3(0, 0, -0.0075f));
-        armPath[4] = armPath[3];
-        armPath[5] = Matrix4x4.Translate(new Vector3(0, 0, 0.0075f));
-        armPath[6] = armPath[5];
-        armPath[7] = Matrix4x4.Scale(new Vector3(0.9f, 0.98f, 1)) * Matrix4x4.Translate(new Vector3(0, 0, 0.01f));
-        armPath[8] = armPath[7];
-        armPath[9] = Matrix4x4.Scale(new Vector3(0, 0, 1)) * Matrix4x4.Translate(new Vector3(0, 0, 0.01f));
 
-        // Create first arm
-        arm1 = new GameObject();
-        arm1.name = "Lamp Arm1";
-        MeshRenderer arm1Renderer = arm1.AddComponent<MeshRenderer>();
-        if (mat != null) arm1Renderer.sharedMaterial = mat;
-        MeshFilter arm1Filter = arm1.AddComponent<MeshFilter>();
-        arm1Filter.mesh = MeshUtilities.Sweep(armProfile, armPath, false);
-        arm1.transform.parent = baseJoint.transform;
-        arm1.transform.localPosition = new Vector3(0, 0.1f, 0);
-        arm1.transform.localRotation = Quaternion.identity;
+        // Revolve profile around Y axis.
+        //
+        // If your MeshUtilities uses a different
+        // MakeCirclePath signature, use the version
+        // from your provided MeshUtilities class.
 
-        // Create second arm (upper arm)
-        arm2 = new GameObject();
-        arm2.name = "Lamp Arm2";
-        MeshRenderer arm2Renderer = arm2.AddComponent<MeshRenderer>();
-        if (mat != null) arm2Renderer.sharedMaterial = mat;
-        MeshFilter arm2Filter = arm2.AddComponent<MeshFilter>();
-        arm2Filter.mesh = MeshUtilities.Sweep(armProfile, armPath, false);
-        arm2.transform.parent = elbowJoint.transform;
-        arm2.transform.localPosition = new Vector3(0, 0.1f, 0);
-        arm2.transform.localRotation = Quaternion.identity;
+        Matrix4x4[] shadePath =
+            MeshUtilities.MakeCirclePath(
+                32,
+                0
+            );
 
-        // Lamp shade profile (simple example)
-        Vector3[] shadeProfile = new Vector3[] {
-            new Vector3(0.0f, 0.05f, 0.0f),
-            new Vector3(0.08f, 0.05f, 0.0f),
-            new Vector3(0.095f, 0.03f, 0.0f),
-            new Vector3(0.1f, 0.0f, 0.0f),
-            new Vector3(0.095f, -0.03f, 0.0f),
-            new Vector3(0.08f, -0.05f, 0.0f),
-            new Vector3(0.0f, -0.05f, 0.0f)
-        };
 
-        Matrix4x4[] shadePath = MeshUtilities.MakeCirclePath(0f, 16);
-        lampShade = new GameObject();
-        lampShade.name = "Lamp Shade";
-        MeshRenderer shadeRenderer = lampShade.AddComponent<MeshRenderer>();
-        if (mat != null) shadeRenderer.sharedMaterial = mat;
-        MeshFilter shadeFilter = lampShade.AddComponent<MeshFilter>();
-        shadeFilter.mesh = MeshUtilities.Sweep(shadeProfile, shadePath, true);
-        lampShade.transform.parent = shadeJoint.transform;
-        lampShade.transform.localPosition = Vector3.zero;
-        lampShade.transform.localRotation = Quaternion.identity;
+        filter.mesh =
+            MeshUtilities.Sweep(
+                shadeProfile,
+                shadePath,
+                false
+            );
+
+
+        // Attach directly to shade joint
+        lampShade.transform.parent =
+            shadeJoint.transform;
+
+        lampShade.transform.localPosition =
+            Vector3.zero;
+
+        lampShade.transform.localRotation =
+            Quaternion.identity;
     }
 }
