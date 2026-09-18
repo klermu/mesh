@@ -28,7 +28,7 @@ public class cylinder : MonoBehaviour
         Mesh mesh = null;
         try
         {
-            mesh = MeshUtilities.Cylinder(16,1f, 3);
+            mesh = MeshUtilities.Cylinder(8,50f, 0.1f);
         }
         catch (System.Exception e)
         {
