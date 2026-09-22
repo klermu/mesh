@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class MeshUtilities
 {
@@ -221,5 +222,19 @@ public class MeshUtilities
 		}
 		return profile;
 	}
+    public static Matrix4x4[] MakePathFromSpline(SplineContainer spline, int divisions)
+    {
+        var currentSpline = spline.Splines[0];
+        Matrix4x4[] path = new Matrix4x4[divisions + 1];
+
+        for (int i = 0; i <= divisions; i++)
+        {
+            var percent = i / (float)divisions;
+            currentSpline.Evaluate(percent, out var pos, out var tangent, out var up);
+            path[i] = Matrix4x4.TRS(pos, Quaternion.LookRotation(tangent, up), Vector3.one);
+        }
+
+        return path;
+    }
 
 }
