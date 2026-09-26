@@ -43,6 +43,8 @@ public class CharacterGenerator : MonoBehaviour
     public Material skinMaterial;
     public Material armourMaterial;
 
+   
+
 
     void Start()
     {

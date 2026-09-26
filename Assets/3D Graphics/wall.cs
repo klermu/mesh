@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class cylinder : MonoBehaviour
+public class wall : MonoBehaviour
 {
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,7 +27,7 @@ public class cylinder : MonoBehaviour
         Mesh mesh = null;
         try
         {
-            mesh = MeshUtilities.Cylinder(8,50f, 0.1f);
+            mesh = MeshUtilities.Cylinder(4, 10f, 0.1f);
         }
         catch (System.Exception e)
         {
@@ -41,6 +40,4 @@ public class cylinder : MonoBehaviour
             Debug.LogError("Failed to create mesh in cylinder.Start");
 
     }
-  
-    
 }
