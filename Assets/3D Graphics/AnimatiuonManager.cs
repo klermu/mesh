@@ -23,8 +23,8 @@ public class AnimationManager : MonoBehaviour
 
     // Loop the animation when finished.
     public bool loop = true;
-    // Discrete turn applied after each segment completes
-    public bool turnOnSegment = false;
+    // Apply a discrete rotation after each segment completes
+    public bool turnOnSegment = true;
     public float turnAngle = 90f;
     public Vector3 turnAxis = Vector3.up;
 
@@ -62,6 +62,12 @@ public class AnimationManager : MonoBehaviour
                     yield return null;
                 }
                 Target.localPosition = b;
+
+                // Apply a discrete rotation after the segment if enabled
+                if (turnOnSegment && Mathf.Abs(turnAngle) > 0.0001f)
+                {
+                    Target.Rotate(turnAxis.normalized * turnAngle, Space.Self);
+                }
             }
         } while (loop);
 

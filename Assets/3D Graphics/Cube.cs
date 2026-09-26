@@ -1,44 +1,36 @@
 using UnityEngine;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class Cube : MonoBehaviour
 {
+    GameObject handle;
+    public Material handleMaterial;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Ensure a MeshRenderer is present
-        MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
-        if (meshRenderer == null)
-            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        handle = new GameObject();
+        handle.name = "Handle";
 
-        // Ensure the renderer has a material so it can render in the scene
-        if (meshRenderer.sharedMaterial == null)
-        {
-            var std = Shader.Find("Standard");
-            if (std != null)
-                meshRenderer.sharedMaterial = new Material(std);
-        }
+        MeshRenderer handleRenderer =
+            handle.AddComponent<MeshRenderer>();
 
-        // Ensure a MeshFilter is present
-        MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
-        if (meshFilter == null)
-            meshFilter = gameObject.AddComponent<MeshFilter>();
+        // Apply public handle material
+        handleRenderer.sharedMaterial = handleMaterial;
 
-        // Create the mesh safely and assign if successful
-        Mesh mesh = null;
-        try
-        {
-            mesh = MeshUtilities.Cube(1f);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("MeshUtilities.Cube threw an exception: " + e);
-        }
+        MeshFilter handleFilter =
+            handle.AddComponent<MeshFilter>();
 
-        if (mesh != null)
-            meshFilter.sharedMesh = mesh;
-        else
-            Debug.LogError("Failed to create mesh in cylinder.Start");
+        handleFilter.mesh =
+            MeshUtilities.Cylinder(4, 10f, 0.1f);
+       
+
+        handle.transform.parent = transform;
+
+        handle.transform.localPosition =
+            new Vector3(-15, 5, 0);
+
+        handle.transform.localRotation = Quaternion.Euler(new Vector3(45f, 0f, -90f));
 
     }
   

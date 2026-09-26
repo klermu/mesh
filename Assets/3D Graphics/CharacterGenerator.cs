@@ -298,7 +298,9 @@ public class CharacterGenerator : MonoBehaviour
             leftElbowJoint.transform;
 
         leftLowerArm.transform.localPosition =
-            new Vector3(0f, -0.15f, 0f);
+            new Vector3(-0.1300001f, 2.155f, 1.473f);
+        leftLowerArm.transform.localRotation = Quaternion.Euler(new Vector3(-114.31f, 0f, 0f));
+
 
 
         // =========================================================
@@ -317,7 +319,8 @@ public class CharacterGenerator : MonoBehaviour
             rightElbowJoint.transform;
 
         rightLowerArm.transform.localPosition =
-            new Vector3(0f, -0.15f, 0f);
+            new Vector3(0f, 2.13f, 1.3f);
+        rightLowerArm.transform.localRotation = Quaternion.Euler(new Vector3(-113.31f, 0f, 0f));
 
 
         // =========================================================
