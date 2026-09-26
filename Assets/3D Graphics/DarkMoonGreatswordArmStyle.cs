@@ -169,6 +169,7 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
 
 
         sword.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
+
         
     }
 
