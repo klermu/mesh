@@ -28,7 +28,7 @@ public class wall : MonoBehaviour
         try
         {
             mesh = MeshUtilities.Cylinder(4, 10f, 0.1f);
-            me
+            
         }
         catch (System.Exception e)
         {

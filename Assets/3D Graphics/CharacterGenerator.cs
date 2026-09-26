@@ -43,6 +43,10 @@ public class CharacterGenerator : MonoBehaviour
     public Material skinMaterial;
     public Material armourMaterial;
 
+    // head size and transform rotation (set in inspector)
+    public float headScale = 0.6f;
+    public Vector3 headRotationEuler = Vector3.zero; // degrees
+
    
 
 
@@ -198,6 +202,13 @@ public class CharacterGenerator : MonoBehaviour
             skinMaterial,
             new Vector3(0f, 5.8f, 0f)
         );
+
+        // make the head smaller and apply initial scale and rotation
+        if (head != null)
+        {
+            head.transform.localScale = Vector3.one * headScale;
+            head.transform.localEulerAngles = headRotationEuler;
+        }
 
 
         // =========================================================
@@ -478,5 +489,7 @@ public class CharacterGenerator : MonoBehaviour
 
         return joint;
     }
+
+    // No Update: head rotation is set once via headRotationEuler (inspector) instead of auto-rotating.
 }
 
