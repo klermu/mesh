@@ -1,36 +1,36 @@
 using UnityEngine;
 using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
-public class Cube : MonoBehaviour
+public class cube : MonoBehaviour
 {
-    GameObject handle;
+    GameObject Enemy;
     public Material handleMaterial;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        handle = new GameObject();
-        handle.name = "Handle";
+        Enemy = new GameObject();
+        Enemy.name = "Enemy";
 
-        MeshRenderer handleRenderer =
-            handle.AddComponent<MeshRenderer>();
+        MeshRenderer enemyRenderer =
+            Enemy.AddComponent<MeshRenderer>();
 
         // Apply public handle material
-        handleRenderer.sharedMaterial = handleMaterial;
+        enemyRenderer.sharedMaterial = handleMaterial;
 
-        MeshFilter handleFilter =
-            handle.AddComponent<MeshFilter>();
+        MeshFilter enemyFilter =
+            Enemy.AddComponent<MeshFilter>();
 
-        handleFilter.mesh =
-            MeshUtilities.Cylinder(4, 10f, 0.1f);
+        enemyFilter.mesh =
+            MeshUtilities.Cube(0.4f);
        
 
-        handle.transform.parent = transform;
+        Enemy.transform.parent = transform;
 
-        handle.transform.localPosition =
-            new Vector3(-15, 5, 0);
+        Enemy.transform.localPosition =
+            new Vector3(0, 5, 0);
 
-        handle.transform.localRotation = Quaternion.Euler(new Vector3(45f, 0f, -90f));
+        Enemy.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
 
     }
   
