@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Dark Moon Greatsword generator
@@ -24,11 +26,11 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
 
         Vector3[] swordProfile = new Vector3[]
         {
-            new Vector3(0.5f, 0f, 0f),
-            new Vector3(0.5f, 6f, 0f),
-            new Vector3(0f, 8.5f, 0f),
-            new Vector3(-0.5f, 6f, 0f),
-            new Vector3(-0.5f, 0f, 0f)
+            new Vector3(-0.2f, 0f, 0f),
+            new Vector3(0.2f, 0f, 0f),
+            new Vector3(0.2f, 1.5f, 0f),
+            new Vector3(0f, 4f, 0f),
+            new Vector3(-0.2f, 1.5f, 0f)
         };
 
 
@@ -38,21 +40,21 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
 
         Vector3[] handleProfile = new Vector3[]
         {
-            new Vector3(-1f, 0f, 0f),
-            new Vector3(-2.2f, -0.1f, 0f),
-            new Vector3(-2.2f, -0.5f, 0f),
-            new Vector3(-2f, -0.6f, 0f),
-            new Vector3(-1.5f, -0.5f, 0f),
-            new Vector3(-0.25f, -0.5f, 0f),
-            new Vector3(-0.25f, -3f, 0f),
-            new Vector3(0f, -3f, 0f),
-            new Vector3(0.25f, -3f, 0f),
-            new Vector3(0.25f, -0.5f, 0f),
-            new Vector3(1.5f, -0.5f, 0f),
-            new Vector3(2f, -0.6f, 0f),
-            new Vector3(2.2f, -0.5f, 0f),
-            new Vector3(2.2f, -0.1f, 0f),
-            new Vector3(1f, 0f, 0f),
+            new Vector3(-0.5f, 0f, 0f),
+            new Vector3(-1.1f, -0.05f, 0f),
+            new Vector3(-1.1f, -0.25f, 0f),
+            new Vector3(-1.0f, -0.3f, 0f),
+            new Vector3(-0.75f, -0.25f, 0f),
+            new Vector3(-0.125f, -0.25f, 0f),
+            new Vector3(-0.125f, -1.5f, 0f),
+            new Vector3(0f, -1.5f, 0f),
+            new Vector3(0.125f, -1.5f, 0f),
+            new Vector3(0.125f, -0.25f, 0f),
+            new Vector3(0.75f, -0.25f, 0f),
+            new Vector3(1.0f, -0.3f, 0f),
+            new Vector3(1.1f, -0.25f, 0f),
+            new Vector3(1.1f, -0.05f, 0f),
+            new Vector3(0.5f, 0f, 0f),
             new Vector3(0f, 0f, 0f)
         };
 
@@ -177,6 +179,11 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
     public Vector3 spinAxis = new Vector3(0f, 1f, 0f);
     public float spinSpeed = 90f; // degrees per second
 
+    // Rotation to followers (optional)
+    public List<Transform> Followers = new List<Transform>();
+    public float rotateToFollowerDuration = 0.25f;
+    int currentFollowerIndex = -1;
+
     // Remember local position so the sword can be kept in place while rotating
     Vector3 swordLocalPosition;
     Vector3 handleLocalPosition;
@@ -201,6 +208,48 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
         sword.transform.Rotate(spinAxis.normalized * spinSpeed * Time.deltaTime, Space.Self);
         if (handle != null)
             handle.transform.Rotate(spinAxis.normalized * spinSpeed * Time.deltaTime, Space.Self);
+    }
+
+    // Public API: rotate the sword to face the next follower in the list.
+    // Wraps to the first follower when reaching the end.
+    public void RotateToNextFollower()
+    {
+        if (Followers == null || Followers.Count == 0) return;
+
+        currentFollowerIndex = (currentFollowerIndex + 1) % Followers.Count;
+        Transform next = Followers[currentFollowerIndex];
+        if (next == null) return;
+
+        StopAllCoroutines();
+        StartCoroutine(RotateElbowToFollower(next, rotateToFollowerDuration));
+    }
+
+    IEnumerator RotateElbowToFollower(Transform target, float duration)
+    {
+        if (elbowJoint == null || sword == null) yield break;
+
+        // Direction from sword (world pos) to the target
+        Vector3 dir = target.position - sword.transform.position;
+        if (dir.sqrMagnitude < 0.000001f) yield break;
+
+        // Desired world rotation so the sword's forward points at target
+        Quaternion desiredSwordWorldRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+
+        // Convert desired sword world rotation into the elbow's rotation by removing the sword's local rotation
+        Quaternion swordLocalRot = sword.transform.localRotation;
+        Quaternion desiredElbowRot = desiredSwordWorldRot * Quaternion.Inverse(swordLocalRot);
+
+        Quaternion startRot = elbowJoint.transform.rotation;
+        float t = 0f;
+        while (t < duration)
+        {
+            float p = t / Mathf.Max(0.0001f, duration);
+            elbowJoint.transform.rotation = Quaternion.Slerp(startRot, desiredElbowRot, p);
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        elbowJoint.transform.rotation = desiredElbowRot;
     }
 }
 
