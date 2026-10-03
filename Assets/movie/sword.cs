@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Dark Moon Greatsword generator
-public class DarkMoonGreatswordArmStyle : MonoBehaviour
+public class sword : MonoBehaviour
 {
-    GameObject sword;
+    GameObject swordblade;
     GameObject handle;
     GameObject elbowJoint;
 
@@ -116,10 +116,7 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
 
         handle.transform.parent = transform;
 
-        handle.transform.localPosition =
-            new Vector3(0, 5, 0);
-
-        handle.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
+       
         
 
 
@@ -144,17 +141,17 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
         // SWORD
         // =========================================================
 
-        sword = new GameObject();
-        sword.name = "Sword";
+        swordblade = new GameObject();
+        swordblade.name = "Sword Blade";
 
         MeshRenderer swordRenderer =
-            sword.AddComponent<MeshRenderer>();
+            swordblade.AddComponent<MeshRenderer>();
 
         // Apply public sword material
         swordRenderer.sharedMaterial = swordMaterial;
 
         MeshFilter swordFilter =
-            sword.AddComponent<MeshFilter>();
+            swordblade.AddComponent<MeshFilter>();
 
         swordFilter.mesh =
             MeshUtilities.Sweep(
@@ -163,14 +160,10 @@ public class DarkMoonGreatswordArmStyle : MonoBehaviour
                 true);
 
         // Sword is controlled by the joint
-        sword.transform.parent =
+        swordblade.transform.parent =
             elbowJoint.transform;
 
-        // Move back so the joint is at the connection point
-        sword.transform.localPosition = new Vector3(0, 5, 0);
-
-
-        sword.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
+       
 
         
     }

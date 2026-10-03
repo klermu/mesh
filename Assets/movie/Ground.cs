@@ -27,7 +27,7 @@ public class ground : MonoBehaviour
         Mesh mesh = null;
         try
         {
-            mesh = MeshUtilities.Cylinder(8, 500f, 0.1f);
+            mesh = MeshUtilities.Cylinder(8, 50f, 0.1f);
         }
         catch (System.Exception e)
         {
